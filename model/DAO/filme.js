@@ -68,7 +68,7 @@ const deleteFilme = async function(id){
     try {
         let sql = `delete from tbl_filme where id = ${id}`
         let result = await prisma.$executeRawUnsafe(sql)
-        
+
         if(result)
             return true
         else
@@ -77,7 +77,6 @@ const deleteFilme = async function(id){
         return false
     }
 }
-
 
 /*Retorna Todos Os Filmes Existentes*/
 const selectAllFilme= async function() {
