@@ -51,7 +51,7 @@ const updateFilme= async function(filme) {
             sinopse = '${filme.sinopse}',
             data_lancamento = '${filme.data_lancamento}',
             foto_capa = '${filme.foto_capa}',
-            link_trailer = '${filme.link_trailer}'
+            link_trailer = '${filme.link_trailer}',
             where id = '${filme.id}'`
         let resultfilme = await prisma.$executeRawUnsafe(sql)
         if (resultfilme) {
@@ -108,7 +108,120 @@ const selectByIdFilme= async function(id) {
         return false
     }
 }
+const insertgenero= async (genero) => {
+    try {
+        let sql = `insert into tbl_genero(
+                    genero = '${genero.genero}'`
 
+        let result = await prisma.$executeRawUnsafe(sql)
+        if (result)
+            return true
+        else
+            return false
+    } catch (error) {
+        return false
+    }
+}
+const insertsexo= async (sexo) => {
+    try {
+        let sql = `insert into tbl_sexo(
+                    sexo = '${sexo.sexo}'`
+                    
+        let result = await prisma.$executeRawUnsafe(sql)
+        if (result)
+            return true
+        else
+            return false
+    } catch (error) {
+        return false
+    }
+}
+const insertindicativa= async (indicativa) => {
+    try {
+        let sql = `insert into tbl_idicativa(
+                    sexo = '${indicativa.indicativa}'`
+                    
+        let result = await prisma.$executeRawUnsafe(sql)
+        if (result)
+            return true
+        else
+            return false
+    } catch (error) {
+        return false
+    }
+}
+const insertpremiacao = async (premiacao) => {
+    try {
+        let sql = `insert into tbl_premiacao(
+                    premiacao = '${premiacao.premiacao}',
+                    descricao = '${premiacao.descricao}'
+                    `
+        let result = await prisma.$executeRawUnsafe(sql)
+        if (result)
+            return true
+        else
+            return false
+    } catch (error) {
+        return false
+    }
+}
+const insertplataforma = async (plataforma) => {
+    try {
+        let sql = `insert into tbl_plataforma(
+                    plataforma = '${plataforma.plataforma}',
+                    link_plataforma = '${plataforma.link_plataforma}'
+                    `
+        let result = await prisma.$executeRawUnsafe(sql)
+        if (result)
+            return true
+        else
+            return false
+    } catch (error) {
+        return false
+    }
+}
+const insertnacionalidade= async (nacionalidade) => {
+    try {
+        let sql = `insert into tbl_nacionalidade(
+                    nacionalidade = '${nacionalidade.nacionalidade}'`
+
+        let result = await prisma.$executeRawUnsafe(sql)
+        if (result)
+            return true
+        else
+            return false
+    } catch (error) {
+        return false
+    }
+}
+const insertlegenda= async (legenda) => {
+    try {
+        let sql = `insert into tbl_nacionalidade(
+                    legenda = '${legenda.legenda}'`
+
+        let result = await prisma.$executeRawUnsafe(sql)
+        if (result)
+            return true
+        else
+            return false
+    } catch (error) {
+        return false
+    }
+}
+const insertdublagem= async (dublagem) => {
+    try {
+        let sql = `insert into tbl_dublagem(
+                    legenda = '${dublagem.dublagem}'`
+
+        let result = await prisma.$executeRawUnsafe(sql)
+        if (result)
+            return true
+        else
+            return false
+    } catch (error) {
+        return false
+    }
+}
 module.exports={
     insertFilme,
     updateFilme,
