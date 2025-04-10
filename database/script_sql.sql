@@ -15,12 +15,7 @@ create table tbl_filme(
 
 RENAME TABLE tb_filme TO tbl_filme;
 
-/*create table tbl_dublagem(
-	id_dublagem     int not null primary key auto_increment,
-    nome            varchar(50) not null,
-    idade           INT(2) not null,
-);
-
+/*
 create table tbl_ator(
 	id_ator       int not null primary key auto_increment,
     nome          varchar(50) not null,
