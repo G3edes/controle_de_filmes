@@ -40,9 +40,21 @@ app.use((request, response, next)=>{
 })
 
 const controllerFilme= require('./controller/filme/controllerFilme.js')
+const controllerGenero= require('./controller/genero/controllerGenero.js')
+const controllerIndicativa= require('./controller/indicativa/controllerIndicativa.js')
+const controllerLegenda= require('./controller/legenda/controllerLegenda.js')
+const controllerNacionalidade= require('./controller/Nacionalidade/controllerNacionalidade.js')
+const controllerPlataforma= require('./controller/Plataforma/controllerPlataforma.js')
+const controllerPremiacao= require('./controller/Premiacao/controllerPremiacao.js')
+const controllerSexo= require('./controller/sexo/controllerSexo.js')
 
+/*******************************************************************************************************************
+ * 
+ *                                  FILME
+ * 
+ ********************************************************************************************************************/
 
-app.post('/v1/controle-filmes/filme', cors(), bodyParserJSON, async function (request, response) {
+app.post('/v1/controle-filmes/filmepost', cors(), bodyParserJSON, async function (request, response) {
     //recebe o content-type da requisição
     let contentType=request.headers['content-type']
     //recebe do body da requisição os dados encaminhados
@@ -51,7 +63,7 @@ app.post('/v1/controle-filmes/filme', cors(), bodyParserJSON, async function (re
     response.status(resultFilme.status_code)
     response.json(resultFilme)
 })
-app.get('/v1/controle-filmes/filme', cors(), async function (request, response) {
+app.get('/v1/controle-filmes/filmelistar', cors(), async function (request, response) {
     let resultFilme= await controllerFilme.listarFilme()
     response.status(resultFilme.status_code)
     response.json(resultFilme)
@@ -80,6 +92,63 @@ app.put('/v1/controle-filmes/filme/:id', cors(), bodyParserJSON,async function (
     response.status(resultFilme.status_code)
     response.json(resultFilme)
 })
+
+/*******************************************************************************************************************
+ * 
+ *                                  GENERO
+ * 
+ ********************************************************************************************************************/
+
+app.post('/v1/controle-filmes/generopost', cors(), bodyParserJSON, async function (request, response) {
+    //recebe o content-type da requisição
+    let contentType=request.headers['content-type']
+    //recebe do body da requisição os dados encaminhados
+    let dadosBody=request.body
+    let resultGenero= await controllerGenero.inserirGenero(dadosBody,contentType)
+    response.status(resultGenero.status_code)
+    response.json(resultGenero)
+})
+
+app.get('/v1/controle-filmes/generolistar', cors(), async function (request, response) {
+    let resultGenero= await controllerGenero.listarGenero()
+    response.status(resultGenero.status_code)
+    response.json(resultGenero)
+})
+
+app.get('/v1/controle-filmes/genero/:id', cors(), async function (request, response) {
+    let idGenero=request.params.id
+    let genero= await controllerFilme.buscarFilme(idGenero)
+    response.status(genero.status_code)
+    response.json(genero)
+})
+
+app.delete('/v1/controle-filmes/filme/:id', cors(), async function (request, response){
+    let idGenero = request.params.id
+    let resultGenero = await controllerGenero.excluirGenero(idGenero)
+
+    response.status(resultGenero.status_code)
+    response.json(resultGenero)
+})
+
+app.put('/v1/controle-filmes/genero/:id', cors(), bodyParserJSON,async function (request, response) {
+    //content-type requisição
+    let contentType= request.headers['content-type']
+    //id da requisção
+    let idGenero = request.params.id
+    //body da requisição
+    let dadosBody=request.body
+    let resultGenero= await controllerFilme.atualizarFilme(idGenero, dadosBody, contentType)
+    response.status(resultGenero.status_code)
+    response.json(resultGenero)
+})
+
+
+
+/*******************************************************************************************************************
+ * 
+ *                                  iNDICATIVA
+ * 
+ ********************************************************************************************************************/
 app.listen('8080', function(){
     console.log('API funcionando e aguardando requisições..')
 })

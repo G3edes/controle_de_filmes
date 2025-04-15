@@ -2,9 +2,9 @@
 const DAOGenero=require('../../model/DAO/genero.js')
 const message =require('../../modulo/config.js')
 
-const inserirGenero = async (genero) => {
+const inserirGenero = async (genero, contentType) => {
     try {
-        if (contentType=='application/json') {
+        if (contentType && contentType.includes('application/json')) {
             if (genero.genero == '' || genero.genero == undefined || genero.genero==null || genero.genero.lenght<0 ) {
                 return message.ERROR_REQUIRED_FIELDS
             }else{
@@ -25,8 +25,9 @@ const inserirGenero = async (genero) => {
 }
 
 const atualizarGenero = async (id, genero, contentType) => {
+    console.log(id, genero, contentType)
     try {
-        if (contentType=='application/json') {
+        if (contentType == 'application/json') {
             if (id == ''       || id == undefined                 || id== null                         || isNaN(id) || id<=0 ||
             genero.genero == ''|| genero.genero == undefined      || genero.genero == null
         ) {
@@ -94,7 +95,8 @@ const listarGenero = async function () {
     try {
         let dadosGenero={}
         let resultGenero = await DAOGenero.selectAllGenero()
-        if (resultGenero!= false || typeof(result)=='object') {
+        
+        if (resultGenero != false || typeof(result)=='object') {
         
             if(resultGenero.length>0){
                 dadosGenero.status=true
