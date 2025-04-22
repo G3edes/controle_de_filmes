@@ -25,7 +25,6 @@ const inserirGenero = async (genero, contentType) => {
 }
 
 const atualizarGenero = async (id, genero, contentType) => {
-    console.log(id, genero, contentType)
     try {
         if (contentType == 'application/json') {
             if (id == ''       || id == undefined                 || id== null                         || isNaN(id) || id<=0 ||
@@ -35,7 +34,7 @@ const atualizarGenero = async (id, genero, contentType) => {
             }
             let resultgenero=await DAOGenero.selectByIdGenero(id)
             if (resultgenero != false || typeof(resultgenero)== 'object') {
-                if (resultgenero.lenght>0) {
+                if (resultgenero.length>0) {
                     genero.id=parseInt(id)
                     let result = await DAOGenero.updateGenro(genero)
                     if (result) {
@@ -65,7 +64,7 @@ const excluirGenero = async function (idGenero){
         }else{
 
             //função que verifica se ID existe no BD
-            let results = await DataTransfer.selectByIdGenero(parseInt(idGenero))
+            let results = await DAOGenero.selectByIdGenero(parseInt(idGenero))
 
             if(results != false || typeof(results) == 'object'){
                 //se exestir, faremos o delete

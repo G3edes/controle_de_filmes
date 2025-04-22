@@ -2,11 +2,11 @@
 const DAOPremiacao=require('../../model/DAO/premiacao.js')
 const message =require('../../modulo/config.js')
 
-const inserirPremiacao = async (premiacao) => {
+const inserirPremiacao = async (premiacao, contentType) => {
     try {
         if (contentType=='application/json') {
-            if (premiacao.premiacao == '' || premiacao.premiacao == undefined || premiacao.premiacao==null || premiacao.premiacao.lenght<0 ||
-                premiacao.descricao == '' || premiacao.descricao == undefined || premiacao.descricao==null || premiacao.descricao.lenght<0 
+            if (premiacao.premiacao == '' || premiacao.premiacao == undefined || premiacao.premiacao==null || premiacao.premiacao.length<0 ||
+                premiacao.descricao == '' || premiacao.descricao == undefined || premiacao.descricao==null || premiacao.descricao.length<0 
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             }else{
@@ -37,7 +37,7 @@ const atualizarPremiacao = async (id, premiacao, contentType) => {
             }
             let results=await DAOPremiacao.selectByIdPremiacao(id)
             if (results != false || typeof(results)== 'object') {
-                if (results.lenght>0) {
+                if (results.length>0) {
                     premiacao.id=parseInt(id)
                     let result = await DAOPremiacao.updatePremiacao(premiacao)
                     if (result) {
@@ -67,7 +67,7 @@ const excluirPremiacao = async function (idPremiacao){
         }else{
 
             //função que verifica se ID existe no BD
-            let results = await DataTransfer.selectByIdPremiacao(parseInt(idPremiacao))
+            let results = await DAOPremiacao.selectByIdPremiacao(parseInt(idPremiacao))
 
             if(results != false || typeof(results) == 'object'){
                 //se exestir, faremos o delete

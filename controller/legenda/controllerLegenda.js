@@ -2,10 +2,10 @@
 const DAOlegenda=require('../../model/DAO/legenda.js')
 const message =require('../../modulo/config.js')
 
-const inserirLegenda = async (legenda) => {
+const inserirLegenda = async (legenda, contentType) => {
     try {
         if (contentType=='application/json') {
-            if (legenda.legenda == '' || legenda.legenda == undefined || legenda.legenda==null || legenda.legenda.lenght<0 ) {
+            if (legenda.legenda == '' || legenda.legenda == undefined || legenda.legenda==null || legenda.legenda.length<0 ) {
                 return message.ERROR_REQUIRED_FIELDS
             }else{
                 let resultLegenda = await DAOlegenda.insertlegenda(legenda)
@@ -35,7 +35,7 @@ const atualizarLegenda = async (id, legenda, contentType) => {
             }
             let results=await DAOlegenda.selectByIdLegenda(id)
             if (results != false || typeof(results)== 'object') {
-                if (results.lenght>0) {
+                if (results.length>0) {
                     legenda.id=parseInt(id)
                     let result = await DAOlegenda.updateLegenda(legenda)
                     if (result) {
@@ -65,7 +65,7 @@ const excluirLegenda = async function (idLegenda){
         }else{
 
             //função que verifica se ID existe no BD
-            let results = await DataTransfer.selectByIdLegenda(parseInt(idLegenda))
+            let results = await DAOlegenda.selectByIdLegenda(parseInt(idLegenda))
 
             if(results != false || typeof(results) == 'object'){
                 //se exestir, faremos o delete

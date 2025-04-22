@@ -3,11 +3,11 @@ const DAOPlataforma=require('../../model/DAO/plataforma.js')
 const message =require('../../modulo/config.js')
 
 
-const inserirPlataforma = async (plataforma) => {
+const inserirPlataforma = async (plataforma, contentType) => {
     try {
         if (contentType=='application/json') {
             if (plataforma.plataforma == '' || plataforma.plataforma == undefined || plataforma.plataforma==null || plataforma.plataforma.lenght<0 ||
-                plataforma.link == '' || plataforma.link == undefined || plataforma.link==null || plataforma.link.lenght<0
+                plataforma.link_plataforma == '' || plataforma.link_plataforma == undefined || plataforma.link_plataforma==null || plataforma.link_plataforma.length<0
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             }else{
@@ -38,7 +38,7 @@ const atualizarPlataforma = async (id, plataforma, contentType) => {
             }
             let results=await DAOPlataforma.selectByIdPlataforma(id)
             if (results != false || typeof(results)== 'object') {
-                if (results.lenght>0) {
+                if (results.length>0) {
                     plataforma.id=parseInt(id)
                     let result = await DAOPlataforma.updatePlataforma(plataforma)
                     if (result) {
@@ -68,7 +68,7 @@ const excluirPlataforma = async function (idPlataforma){
         }else{
 
             //função que verifica se ID existe no BD
-            let results = await DataTransfer.selectByIdPlataforma(parseInt(idPlataforma))
+            let results = await DAOPlataforma.selectByIdPlataforma(parseInt(idPlataforma))
 
             if(results != false || typeof(results) == 'object'){
                 //se exestir, faremos o delete

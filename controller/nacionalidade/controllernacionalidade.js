@@ -2,7 +2,7 @@
 const DAOnacionalidade=require('../../model/DAO/nacionalidade.js')
 const message =require('../../modulo/config.js')
 
-const inserirNacionalidade = async (nacionalidade) => {
+const inserirNacionalidade = async (nacionalidade, contentType) => {
     try {
         if (contentType=='application/json') {
             if (nacionalidade.nacionalidade == '' || nacionalidade.nacionalidade == undefined || nacionalidade.nacionalidade==null || nacionalidade.nacionalidade.lenght<0 ) {
@@ -34,7 +34,7 @@ const atualizarNacionalidade = async (id, nacionalidade, contentType) => {
             }
             let results=await DAOnacionalidade.selectByIdNacionalidade(id)
             if (results != false || typeof(results)== 'object') {
-                if (results.lenght>0) {
+                if (results.length>0) {
                     nacionalidade.id=parseInt(id)
                     let result = await DAOnacionalidade.updateNacionalidade(nacionalidade)
                     if (result) {
@@ -64,7 +64,7 @@ const excluirNacionalidade = async function (idNacionalidade){
         }else{
 
             //função que verifica se ID existe no BD
-            let results = await DataTransfer.selectByIdNacionalidade(parseInt(idNacionalidade))
+            let results = await DAOnacionalidade.selectByIdNacionalidade(parseInt(idNacionalidade))
 
             if(results != false || typeof(results) == 'object'){
                 //se exestir, faremos o delete

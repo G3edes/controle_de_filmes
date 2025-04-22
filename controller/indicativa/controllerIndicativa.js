@@ -3,10 +3,10 @@ const DAOIndicativa=require('../../model/DAO/indicativa.js')
 const message =require('../../modulo/config.js')
 
 
-const inserirIndicativa = async (indicativa) => {
+const inserirIndicativa = async (indicativa, contentType) => {
     try {
         if (contentType=='application/json') {
-            if (indicativa.indicativa == '' || indicativa.indicativa == undefined || indicativa.indicativa==null || indicativa.indicativa.lenght<0 ) {
+            if (indicativa.indicativa == '' || indicativa.indicativa == undefined || indicativa.indicativa==null || indicativa.indicativa.length<0 ) {
                 return message.ERROR_REQUIRED_FIELDS
             }else{
                 let result = await DAOIndicativa.insertindicativa(indicativa)
@@ -35,7 +35,7 @@ const atualizarIndicativa = async (id, indicativa, contentType) => {
             }
             let results=await DAOIndicativa.selectByIdIndicativa(id)
             if (results != false || typeof(results)== 'object') {
-                if (results.lenght>0) {
+                if (results.length>0) {
                     indicativa.id=parseInt(id)
                     let result = await DAOIndicativa.updateIndicativa(indicativa)
                     if (result) {
@@ -65,7 +65,7 @@ const excluirIndicativa = async function (idIndicativa){
         }else{
 
             //função que verifica se ID existe no BD
-            let results = await DataTransfer.selectByIdIndicativa(parseInt(idIndicativa))
+            let results = await DAOIndicativa.selectByIdIndicativa(parseInt(idIndicativa))
 
             if(results != false || typeof(results) == 'object'){
                 //se exestir, faremos o delete
