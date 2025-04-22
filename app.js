@@ -388,7 +388,7 @@ app.delete('/v1/controle-filmes/premiacao/delete/:id', cors(), async function (r
     response.json(resultPremiacao)
 })
 
-app.put('/v1/controle-filmes/plataforma/put/:id', cors(), bodyParserJSON,async function (request, response) {
+app.put('/v1/controle-filmes/premiacao/put/:id', cors(), bodyParserJSON,async function (request, response) {
     //content-type requisição
     let contentType= request.headers['content-type']
     //id da requisção
@@ -399,8 +399,63 @@ app.put('/v1/controle-filmes/plataforma/put/:id', cors(), bodyParserJSON,async f
 
     response.status(resultPremiacao.status_code)
     response.json(resultPremiacao)
+
+
+
 })
 
+/*******************************************************************************************************************
+ * 
+ *                                  SEXO
+ * 
+ ********************************************************************************************************************/
+
+app.post('/v1/controle-filmes/sexopost', cors(), bodyParserJSON, async function (request, response) {
+    //recebe o content-type da requisição
+    let contentType=request.headers['content-type']
+    //recebe do body da requisição os dados encaminhados
+    let dadosBody=request.body
+    let resultSexo= await controllerSexo.inserirSexo(dadosBody,contentType)
+    response.status(resultSexo.status_code)
+    response.json(resultSexo)
+})
+
+app.get('/v1/controle-filmes/sexolistar', cors(), async function (request, response) {
+    let resultSexo= await controllerSexo.listarSexo()
+    response.status(resultSexo.status_code)
+    response.json(resultSexo)
+})
+
+app.get('/v1/controle-filmes/sexo/:id', cors(), async function (request, response) {
+    let idSexo=request.params.id
+    let resultSexo= await controllerSexo.buscarSexo(idSexo)
+    response.status(resultSexo.status_code)
+    response.json(resultSexo)
+})
+
+app.delete('/v1/controle-filmes/sexo/delete/:id', cors(), async function (request, response){
+    let idSexo = request.params.id
+    let resultSexo = await controllerSexo.excluirSexo(idSexo)
+
+    response.status(resultSexo.status_code)
+    response.json(resultSexo)
+})
+
+app.put('/v1/controle-filmes/sexo/put/:id', cors(), bodyParserJSON,async function (request, response) {
+    //content-type requisição
+    let contentType= request.headers['content-type']
+    //id da requisção
+    let idSexo = request.params.id
+    //body da requisição
+    let dadosBody=request.body
+    let resultSexo= await controllerSexo.atualizarSexo(idSexo, dadosBody, contentType)
+
+    response.status(resultSexo.status_code)
+    response.json(resultSexo)
+
+
+
+})
 app.listen('8080', function(){
     console.log('API funcionando e aguardando requisições..')
 })

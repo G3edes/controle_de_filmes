@@ -2,10 +2,10 @@
 const DAOSexo=require('../../model/DAO/sexo.js')
 const message =require('../../modulo/config.js')
 
-const inserirSexo = async (sexo) => {
+const inserirSexo = async (sexo, contentType) => {
     try {
         if (contentType=='application/json') {
-            if (sexo.sexo == '' || sexo.sexo == undefined || sexo.sexo==null || sexo.sexo.lenght<0 ) {
+            if (sexo.sexo == '' || sexo.sexo == undefined || sexo.sexo==null || sexo.sexo.length<0 ) {
                 return message.ERROR_REQUIRED_FIELDS
             }else{
                 let result = await DAOSexo.insertsexo(sexo)
@@ -34,7 +34,7 @@ const atualizarSexo = async (id, sexo, contentType) => {
             }
             let results=await DAOSexo.selectByIdSexo(id)
             if (results != false || typeof(results)== 'object') {
-                if (results.lenght>0) {
+                if (results.length>0) {
                     sexo.id=parseInt(id)
                     let result = await DAOSexo.updateSexo(sexo)
                     if (result) {
@@ -64,7 +64,7 @@ const excluirSexo = async function (idSexo){
         }else{
 
             //função que verifica se ID existe no BD
-            let results = await DataTransfer.selectByIdSexo(parseInt(idSexo))
+            let results = await DAOSexo.selectByIdSexo(parseInt(idSexo))
 
             if(results != false || typeof(results) == 'object'){
                 //se exestir, faremos o delete
