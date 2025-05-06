@@ -20,14 +20,16 @@ const insertFilme= async function(filme){
         sinopse,
         data_lancamento,
         foto_capa,
-        link_trailer
+        link_trailer,
+        id_classificacao
         )values(
         '${filme.nome}',
         '${filme.duracao}',
         '${filme.sinopse}',
         '${filme.data_lancamento}',
         '${filme.foto_capa}',
-        '${filme.link_trailer}'
+        '${filme.link_trailer}',
+        '${filme.id_indicativa}'
         )`
     //Executa o script sql do banco de dados e aguarda o retorno do bd para saber se deu certo
     let result =  await prisma.$executeRawUnsafe(sql)
@@ -52,6 +54,7 @@ const updateFilme= async function(filme) {
             data_lancamento = '${filme.data_lancamento}',
             foto_capa = '${filme.foto_capa}',
             link_trailer = '${filme.link_trailer}',
+            id_indicativa = '${filme.id_indicativa}'
             where id = '${filme.id}'`
         let resultfilme = await prisma.$executeRawUnsafe(sql)
         if (resultfilme) {
