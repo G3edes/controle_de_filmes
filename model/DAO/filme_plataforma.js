@@ -5,17 +5,17 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 //Função para inserir um novo FilmeGenero
-const insertFilmeLegenda = async function(FilmeLegenda){
+const insertFilmePlataforma = async function(FilmePlataforma){
   try {
 
-      let sql = `insert into tbl_filme_legenda  ( 
+      let sql = `insert into tbl_filme_plataforma  ( 
                                           id_filme,
-                                          id_legenda
+                                          id_plataforma
                                         ) 
                                           values 
                                         (
-                                          ${FilmeLegenda.id_filme},
-                                          ${FilmeLegenda.id_legenda}
+                                          ${FilmePlataforma.id_filme},
+                                          ${FilmePlataforma.id_plataforma}
                                         )`
       //console.log(sql)
 
@@ -34,12 +34,12 @@ const insertFilmeLegenda = async function(FilmeLegenda){
 }
 
 //Função para atualizar um FilmeGenero existente
-const updateFilmeLegenda = async function(FilmeLegenda){
+const updateFilmePlataforma = async function(FilmePlataforma){
   try {
-      let sql = `update tbl_filme_legenda set        id_filme       = ${FilmeLegenda.id_filme},
-                                                    id_legenda      = ${FilmeLegenda.id_legenda}
+      let sql = `update tbl_filme_plataforma set        id_filme       = ${FilmePlataforma.id_filme},
+                                                    id_plataforma      = ${FilmePlataforma.id_plataforma}
                                         
-                            where id = ${FilmeLegenda.id}                
+                            where id = ${FilmePlataforma.id}                
                             `
       let result = await prisma.$executeRawUnsafe(sql)
 
@@ -53,9 +53,9 @@ const updateFilmeLegenda = async function(FilmeLegenda){
 }
 
 //Função para excluir um FilmeGenero existente
-const deleteFilmeLegenda = async function(id){
+const deleteFilmePlataforma = async function(id){
   try {
-    let sql = `delete from tbl_filme_legenda where id = ${id}`
+    let sql = `delete from tbl_filme_plataforma where id = ${id}`
 
     let result = await prisma.$executeRawUnsafe(sql)
 
@@ -69,11 +69,11 @@ const deleteFilmeLegenda = async function(id){
 }
 
 //Função para retornar todos os FilmeGeneros existentes
-const selectAllFilmeLegenda = async function(){
+const selectAllFilmePlataforma = async function(){
 
     try {
       //ScriptSQL para retornar todos os dados
-      let sql = 'select * from tbl_filme_legenda order by id desc'
+      let sql = 'select * from tbl_filme_plataforma order by id desc'
 
       //Executa o scriptSQL no BD e aguarda o retorno dos dados
       let result = await prisma.$queryRawUnsafe(sql)
@@ -89,7 +89,7 @@ const selectAllFilmeLegenda = async function(){
 }
 
 //Função para buscar um FilmeGenero pelo ID
-const selectByIdFilmeLegenda = async function(id){
+const selectByIdFilmepPataforma = async function(id){
   try {
     let sql = `select * from tbl_filme_plataforma where id = ${id}`
 
@@ -105,14 +105,14 @@ const selectByIdFilmeLegenda = async function(id){
 }
 
 //Função para retornar os filmes pelo genero
-const selectFilmeByIdLegenda = async function(idLegenda){
+const selectFilmeByIdPlataforma = async function(idPlataforma){
   try {
       let sql = `select tbl_filme.* from tbl_filme 
-                                            inner join tbl_filme_legenda
-                                              on tbl_filme.id = tbl_filme_legenda.id_filme
-                                            inner join tbl_legenda
-                                              on tbl_legenda.id = tbl_filme_legenda.id_legenda
-                  where tbl_filme_legenda.id_legenda = ${idLegenda}`
+                                            inner join tbl_filme_plataforma
+                                              on tbl_filme.id = tbl_filme_plataforma.id_filme
+                                            inner join tbl_plataforma
+                                              on tbl_legenda.id = tbl_filme_plataforma.id_plataforma
+                  where tbl_filme_plataforma.id_plataforma = ${idPlataforma}`
 
       let result = await prisma.$queryRawUnsafe(sql)
 
@@ -126,14 +126,14 @@ const selectFilmeByIdLegenda = async function(idLegenda){
 }
 
 //Função para retornar os generos pelo Filme
-const selectLegendaByIdFilme = async function(idFilme){
+const selectPlataformaByIdFilme = async function(idFilme){
  try {
-      let sql = `select tbl_legenda.* from tbl_filme 
-                                            inner join tbl_filme_legenda
-                                              on tbl_filme.id = tbl_filme_legenda.id_filme
-                                            inner join tbl_legenda
-                                              on tbl_legenda.id = tbl_filme_legenda.id_legenda
-                  where tbl_filme_legenda.id_filme = ${idFilme}`
+      let sql = `select tbl_plataforma.* from tbl_filme 
+                                            inner join tbl_filme_plataforma
+                                              on tbl_filme.id = tbl_filme_plataforma.id_filme
+                                            inner join tbl_plataforma
+                                              on tbl_plataforma.id = tbl_filme_plataforma.id_plataforma
+                  where tbl_filme_plataforma.id_filme = ${idFilme}`
                   
       let result = await prisma.$queryRawUnsafe(sql)
 
@@ -148,11 +148,11 @@ const selectLegendaByIdFilme = async function(idFilme){
 
 
 module.exports = {
-     insertFilmeLegenda,
-     updateFilmeLegenda,
-     deleteFilmeLegenda,
-     selectAllFilmeLegenda,
-     selectByIdFilmeLegenda,
-     selectFilmeByIdLegenda,
-     selectLegendaByIdFilme
+     insertFilmePlataforma,
+     updateFilmePlataforma,
+     deleteFilmePlataforma,
+     selectAllFilmePlataforma,
+     selectByIdFilmepPataforma,
+     selectFilmeByIdPlataforma,
+     selectPlataformaByIdFilme
 } 

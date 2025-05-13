@@ -456,6 +456,11 @@ app.put('/v1/controle-filmes/sexo/put/:id', cors(), bodyParserJSON,async functio
 
 
 })
+
+
+
+
+
 app.listen('8080', function(){
     console.log('API funcionando e aguardando requisições..')
 })

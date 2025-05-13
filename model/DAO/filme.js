@@ -21,7 +21,7 @@ const insertFilme= async function(filme){
         data_lancamento,
         foto_capa,
         link_trailer,
-        id_classificacao
+        id_indicativa
         )values(
         '${filme.nome}',
         '${filme.duracao}',

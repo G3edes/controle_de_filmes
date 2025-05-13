@@ -8,13 +8,14 @@
 const filmeDAO=require('../../model/DAO/filme.js')
 const message =require('../../modulo/config.js')
 
-const controllerClassificacao   = require('../classificacao/controllerClassificacao.js')
+const controllerClassificacao   = require('../indicativa/controllerIndicativa.js')
 const controllerFilmeGenero     = require('./controllerFilmeGenero.js')
 const controllerFilmeLegenda    = require('./controllerFilmeLegenda.js')
 
 //Função para tratar a inserção de um novo filme no DAO
 const inserirFilme = async function (filme, contentType) {
     try {
+        console.log(filme, contentType)
     if (contentType=='application/json') {
         let response = {}
         if (filme.nome == ''                || filme.nome == undefined            || filme.nome == null             || filme.nome.lenght>80             ||
@@ -22,7 +23,7 @@ const inserirFilme = async function (filme, contentType) {
             filme.sinopse == ''             || filme.sinopse == undefined         || filme.sinopse == null          ||
             filme.data_lancamento == ''     || filme.data_lancamento == undefined || filme.data_lancamento == null  || filme.data_lancamento.lenght>10  ||
             filme.foto_capa == undefined    || filme.foto_capa .lenght>200        ||
-            filme.link_trailer == undefined || filme.link_trailer.lenght>10       || filme.id_classificacao  == ''  || filme.id_classificacao  == undefined ||
+            filme.link_trailer == undefined || filme.link_trailer.lenght>10       || filme.id_indicativa  == ''  || filme.id_indicativa  == undefined ||
             filme.id_indicativa  == ''   || filme.id_indicativa  == undefined)
         {
             return message.ERROR_REQUIRED_FIELDS //400
@@ -118,16 +119,18 @@ const excluirFilme = async function (idFilme){
 //Função para tratar o retorno de uma lista de filmes do DAO
 const listarFilme = async function () {
     try {
+        let arrayFilmes=[]
         let dadosFilme={}
         let resultFilme = await filmeDAO.selectAllFilme()
-        if (resultFilme!= false || typeof(result)=='object') {
+        console.log(resultFilme)
+        if (resultFilme!= false || typeof(resultFilme)=='object') {
         
             if(resultFilme.length>0){
                 dadosFilme.status=true
                 dadosFilme.status_code=200,
                 dadosFilme.itens=resultFilme.length
                 
-                
+
                 //Percorrer o array de filmes para pegar cada ID de classificação
                 // e descobrir quais os dados da classificação
                 
@@ -137,13 +140,14 @@ const listarFilme = async function () {
                 for(const itemFilme of resultFilme){
                     /* Monta o objeto da classificação para retornar no Filme (1XN) */
                         //Busca os dados da classificação na controller de classificacao
-                        let dadosClassificacao = await controllerClassificacao.buscarClassificacao(itemFilme.id_classificacao)
-                        //Adiciona um atributo classificação no JSON de filmes e coloca os dados da classificação
-                        itemFilme.classificacao = dadosClassificacao.classificacao
-                        //Remover um atributo do JSON
-                        delete itemFilme.id_classificacao
-                    /* */
+                        let dadosClassificacao = await controllerClassificacao.buscarIndicativa(itemFilme.id_indicativa)
 
+                        //Adiciona um atributo classificação no JSON de filmes e coloca os dados da classificação
+                        itemFilme.indicativa = dadosClassificacao.indicativa
+                        //Remover um atributo do JSON
+                        delete itemFilme.id_indicativa
+                    /* */
+                            
                     /* Monta o objeto de Generos para retornar no Filme (Relação NxN) */
                         //encaminha o id do filme para a controller retornar os generos associados a esse filme
                         let dadosGenero = await controllerFilmeGenero.buscarGeneroPorFilme(itemFilme.id)
@@ -152,7 +156,7 @@ const listarFilme = async function () {
                         itemFilme.genero = dadosGenero.genero
 
                         let dadosLegenda = await controllerFilmeLegenda.buscarFilmeLegenda(itemFilme.id)
-                        console.log(dadosGenero)
+                        console.log(dadosLegenda)
                         //Adiciona um atributo genero no JSON de filmes e coloca os dados do genero
                         itemFilme.legenda = dadosLegenda.legenda
 
@@ -163,7 +167,6 @@ const listarFilme = async function () {
                 }
                 
                 dadosFilme.films = arrayFilmes
-
                 return dadosFilme
             }else{
                 return message.ERROR_NOT_FOUND
@@ -173,6 +176,7 @@ const listarFilme = async function () {
         }
         //cha,a a funcao para retornar os filmes cadastrados
     } catch (error) {
+        console.log(error)
         return message.ERROR_INTERNAL_SERVER_CONTROLER ///500
     }
 }
@@ -187,8 +191,8 @@ const buscarFilme = async function (idfilme) {
             let result = await filmeDAO.selectByIdFilme(idfilme)
             if (result != false || typeof(result)=='object'){
                 if (result.length>0) {
-                    dadosFilme.status = true
-                    dadosFilme.status_code = 200
+                    dadosfilme.status = true
+                    dadosfilme.status_code = 200
                     
                      //Precisamos utilizar o for of, pois o foreach não consegue trabalhar com 
                 // requisições async com await
