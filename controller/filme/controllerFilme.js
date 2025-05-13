@@ -12,6 +12,7 @@ const controllerClassificacao   = require('../indicativa/controllerIndicativa.js
 const controllerFilmeGenero     = require('./controllerFilmeGenero.js')
 const controllerFilmeLegenda    = require('./controllerFilmeLegenda.js')
 const filmegeneroDAO = require ('../../model/DAO/filme_genero.js')
+const filmelegendaDAO = require ('../../model/DAO/filme_legenda.js')
 
 //Função para tratar a inserção de um novo filme no DAO
 const inserirFilme = async function (filme, contentType) {
@@ -48,7 +49,23 @@ const inserirFilme = async function (filme, contentType) {
                         }
                     
                     }
+                }
+                if (filme.legenda && Array.isArray(filme.legenda)) {
+                    // Obtém o ID do filme inserido
+                    let filmeInserido = await filmeDAO.selectLastInsertId();
+                    let idFilme = filmeInserido[0].id
                     
+                    // Para cada gênero no array, cria a relação
+                    for (let legenda of filme.legenda) {
+                        if (legenda.id && !isNaN(legenda.id)) {
+                            let filmeLegenda = {
+                                id_filme: idFilme,
+                                id_legenda: legenda.id
+                            }
+                            await filmelegendaDAO.insertFilmeLegenda(filmeLegenda);
+                        }
+                    
+                    }
                 }
                 return message.SUCCESS_CREATED_ITEM //201
             }else{
@@ -171,12 +188,11 @@ const listarFilme = async function () {
                     /* Monta o objeto de Generos para retornar no Filme (Relação NxN) */
                         //encaminha o id do filme para a controller retornar os generos associados a esse filme
                         let dadosGenero = await controllerFilmeGenero.buscarGeneroPorFilme(itemFilme.id)
-                        console.log(dadosGenero)
+                        
                         //Adiciona um atributo genero no JSON de filmes e coloca os dados do genero
                         itemFilme.genero = dadosGenero.genero
 
-                        /*let dadosLegenda = await controllerFilmeLegenda.buscarFilmeLegenda(itemFilme.id)
-                        console.log(dadosLegenda)
+                        let dadosLegenda = await controllerFilmeLegenda.buscarFilmeLegenda(itemFilme.id)
                         //Adiciona um atributo genero no JSON de filmes e coloca os dados do genero
                         itemFilme.legenda = dadosLegenda.legenda
 

@@ -143,12 +143,10 @@ const buscarFilmeLegenda = async function(id){
             return message.ERROR_REQUIRED_FIELDS //400
         }else{
             dados = {}
-
-            let result = await filmeLegendaDAO.selectByIdFilmeLegenda(parseInt(id))
-            
+            let result = await filmeLegendaDAO.selectLegendaByIdFilme(parseInt(id))
             if(result != false || typeof(result) == 'object'){
                 if(result.length > 0){
-                     //Criando um JSON de retorno de dados para a API
+                    //Criando um JSON de retorno de dados para a API
                      dados.status = true
                      dados.status_code = 200
                      dados.legenda = result

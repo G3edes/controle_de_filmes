@@ -91,7 +91,7 @@ const selectAllFilmeLegenda = async function(){
 //Função para buscar um FilmeGenero pelo ID
 const selectByIdFilmeLegenda = async function(id){
   try {
-    let sql = `select * from tbl_filme_plataforma where id = ${id}`
+    let sql = `select * from tbl_filme_legenda where id = ${id}`
 
     let result = await prisma.$queryRawUnsafe(sql)
 
@@ -132,11 +132,10 @@ const selectLegendaByIdFilme = async function(idFilme){
                                             inner join tbl_filme_legenda
                                               on tbl_filme.id = tbl_filme_legenda.id_filme
                                             inner join tbl_legenda
-                                              on tbl_legenda.id = tbl_filme_legenda.id_legenda
+                                              on tbl_legenda.id_legenda = tbl_filme_legenda.id_legenda
                   where tbl_filme_legenda.id_filme = ${idFilme}`
                   
       let result = await prisma.$queryRawUnsafe(sql)
-
     if (result)
         return result
     else 
