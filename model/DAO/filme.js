@@ -111,11 +111,24 @@ const selectByIdFilme= async function(id) {
         return false
     }
 }
+const selectLastInsertId = async function() {
+    try {
+        let sql = 'select id from tbl_filme order by id desc limit 1';
+        let result = await prisma.$queryRawUnsafe(sql);
+        if (result)
+            return result;
+        else
+            return false;
+    } catch (error) {
+        return false;
+    }
+}
 
 module.exports={
     insertFilme,
     updateFilme,
     deleteFilme,
     selectAllFilme,
-    selectByIdFilme,
+    selectLastInsertId,
+    selectByIdFilme
 }

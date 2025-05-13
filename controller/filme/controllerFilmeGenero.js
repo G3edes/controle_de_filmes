@@ -195,6 +195,7 @@ const buscarGeneroPorFilme = async function(idFilme){
         }
 
     } catch (error) {
+        //return console.log(error)
         return message.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }
@@ -227,6 +228,7 @@ const buscarFilmePorGenero = async function(idGenero){
         }
 
     } catch (error) {
+        console.log(error)
         return message.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }

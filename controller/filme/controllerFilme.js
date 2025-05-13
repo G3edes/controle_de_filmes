@@ -11,6 +11,7 @@ const message =require('../../modulo/config.js')
 const controllerClassificacao   = require('../indicativa/controllerIndicativa.js')
 const controllerFilmeGenero     = require('./controllerFilmeGenero.js')
 const controllerFilmeLegenda    = require('./controllerFilmeLegenda.js')
+const filmegeneroDAO = require ('../../model/DAO/filme_genero.js')
 
 //Função para tratar a inserção de um novo filme no DAO
 const inserirFilme = async function (filme, contentType) {
@@ -30,6 +31,25 @@ const inserirFilme = async function (filme, contentType) {
         }else{
             let resultFilme= await filmeDAO.insertFilme(filme)
             if (resultFilme) {
+                // Se houver gêneros para associar
+                if (filme.genero && Array.isArray(filme.genero)) {
+                    // Obtém o ID do filme inserido
+                    let filmeInserido = await filmeDAO.selectLastInsertId();
+                    let idFilme = filmeInserido[0].id;
+                    
+                    // Para cada gênero no array, cria a relação
+                    for (let genero of filme.genero) {
+                        if (genero.id && !isNaN(genero.id)) {
+                            let filmeGenero = {
+                                id_filme: idFilme,
+                                id_genero: genero.id
+                            }
+                            await filmegeneroDAO.insertFilmeGenero(filmeGenero);
+                        }
+                    
+                    }
+                    
+                }
                 return message.SUCCESS_CREATED_ITEM //201
             }else{
                 return message.ERROR_INTERNAL_SERVER_MODEL //500
@@ -39,6 +59,7 @@ const inserirFilme = async function (filme, contentType) {
         return message.ERROR_CONTENT_TYPE //415
     }      
     } catch (error) {
+        console.log(error)
         return message.ERROR_INTERNAL_SERVER_CONTROLER //500
     }
 }
@@ -122,7 +143,6 @@ const listarFilme = async function () {
         let arrayFilmes=[]
         let dadosFilme={}
         let resultFilme = await filmeDAO.selectAllFilme()
-        console.log(resultFilme)
         if (resultFilme!= false || typeof(resultFilme)=='object') {
         
             if(resultFilme.length>0){
@@ -155,7 +175,7 @@ const listarFilme = async function () {
                         //Adiciona um atributo genero no JSON de filmes e coloca os dados do genero
                         itemFilme.genero = dadosGenero.genero
 
-                        let dadosLegenda = await controllerFilmeLegenda.buscarFilmeLegenda(itemFilme.id)
+                        /*let dadosLegenda = await controllerFilmeLegenda.buscarFilmeLegenda(itemFilme.id)
                         console.log(dadosLegenda)
                         //Adiciona um atributo genero no JSON de filmes e coloca os dados do genero
                         itemFilme.legenda = dadosLegenda.legenda
@@ -175,7 +195,7 @@ const listarFilme = async function () {
             return message.ERROR_INTERNAL_SERVER_MODEL
         }
         //cha,a a funcao para retornar os filmes cadastrados
-    } catch (error) {
+    } catch (error) {   
         console.log(error)
         return message.ERROR_INTERNAL_SERVER_CONTROLER ///500
     }

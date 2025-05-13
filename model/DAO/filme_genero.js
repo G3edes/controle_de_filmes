@@ -132,7 +132,7 @@ const selectGeneroByIdFilme = async function(idFilme){
                                             inner join tbl_filme_genero
                                               on tbl_filme.id = tbl_filme_genero.id_filme
                                             inner join tbl_genero
-                                              on tbl_genero.id = tbl_filme_genero.id_genero
+                                              on tbl_genero.id_genero = tbl_filme_genero.id_genero
                   where tbl_filme_genero.id_filme = ${idFilme}`
                   
       let result = await prisma.$queryRawUnsafe(sql)
@@ -142,6 +142,7 @@ const selectGeneroByIdFilme = async function(idFilme){
     else 
         return false
   } catch (error) {
+    console.log(error)
       return false
   }
 }
